@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>翻牌遊戲</title>
+    <link rel="stylesheet" href="./style/loding.css">
+    <style>
+        body{
+            background-color: #F2EBE5;
+            display: flex;
+            justify-content: center;
+        }
+        h1{
+            position: absolute;
+            top: 0.5rem;
+            left: 40%;
+            color: #F2EBE5;
+        }
+        /* 載入畫面 */
+        .la-pacman {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+        }
+        /* 遊戲容器 */
+        #content{
+            width: 66.9rem;
+            height: 49rem;
+            text-align: center;
+            position: relative;
+            transform: translate();
+            border-radius: 1rem;
+            background-color: #647295;
+        }
+        /* 開始遊戲 */
+        .game-start{
+            width: 12rem;
+            height: 4rem;
+            position: relative;
+            top: 35%;
+            left: 0%;
+            border: none;
+            font-family: "標楷體";
+            font-weight: bolder;
+            color: white;
+            font-size: 50px;
+            display: inline-block;
+            background-color: rgba(255, 255, 255, 0);
+        }
+        .game-start img{
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            vertical-align: middle;
+            z-index: 0;
+        }
+        .game-start img:hover{
+            filter: hue-rotate(180deg);
+        }
+        .game-content p{
+            margin: 0;
+            padding: 0;
+            color: #F2EBE5;
+            display: inline-block;
+        }
+        .Consumption{
+            width: 2rem;
+            height: 2rem;
+            font-size: 1.5rem;
+            color: #9F496E;
+            text-shadow: 0 0 5px #F2EBE5;
+            box-shadow: 0 0 5px #F2EBE5,
+                        0 0 5px #F2EBE5 inset;
+            border: 1px solid #9F496E;
+            border-radius: 50%;
+            background-color: rgba(0, 0, 0, 0);
+        }
+        .Consumption:hover, 
+        .Consumption:active{
+            color: #F2EBE5;
+            border: 1px solid #9F496E;
+            background-color: #9F496E;
+            box-shadow: 0 0 10px #F2EBE5;
+        }
+
+        /* 牌區 */
+        .game{
+            width: 66.9rem;
+            height: 43rem;
+            background-color: #d8bba1;
+            position: absolute;
+            bottom: 0;
+            border-bottom-left-radius: 1rem;
+            border-bottom-right-radius: 1rem;
+        }
+        /* 卡片部分 */
+        /* 圖片名稱：【阿飄 誇丟鬼】 */
+        .card {
+            width: 10rem;
+            height: 13rem;
+            border: 1px solid #9f496e00;
+            box-shadow: 0 0 10px #9f496e00;
+            border: 1px solid #9F496E;
+            border-radius: 15px;
+            position: relative;
+            float: left;
+            margin: 0.5rem;
+            /* 設定子元素在 3D 空間內 */
+            transform-style: preserve-3d;
+            transition: transform 1s;
+        }
+
+        .card:hover{
+            border: 1px solid #9F496E;
+            box-shadow: 0 0 10px #9F496E;
+        }
+
+        .card-close{
+            transform: rotateY(180deg);
+        }
+
+        .card-front{
+            width: 100%;
+            height: 100%;
+            border-radius: 15px;
+            position: absolute;
+            /* 背景設定 */
+            background-color: #647295;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
+            backface-visibility: hidden;
+        }
+        .card-back{
+            width: 100%;
+            height: 100%;
+            border-radius: 15px;
+            position: absolute;
+            /* 背景設定 */
+            background-image: url('./images/back.jpg');
+            background-color: #647295;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
+            transform: rotateY(180deg);
+            backface-visibility: hidden;
+        }
+
+        .time {
+            width: 10rem;
+            height: 13rem;
+            border: 1px solid #9f496e00;
+            box-shadow: 0 0 10px #9f496e00;
+            border: 1px solid #9F496E;
+            background-color: #647295;
+            border-radius: 15px;
+            position: absolute;
+            right: 2.57rem;
+            bottom: 1.15rem;
+            display: flex;
+            
+        }
+    </style>
+</head>
+<body onload="loding()">
+    <div class="la-pacman la-2x">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+    <div id="content" class="content">
+        <h1>翻牌遊戲</h1>
+        <!-- 遊戲畫面 -->
+        <div class="game-content">
+            <div class="game"></div>
+        </div>
+    </div>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js' integrity='sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==' crossorigin='anonymous'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.10.1/sweetalert2.all.min.js' integrity='sha512-1SVc8wK7Y/XRAKRKfP09ILQmzJGwqq6m66x6mWa7r36j+/fa+3kz46s8kvELsGc52yo1as48nneFic7BZKMu8Q==' crossorigin='anonymous'></script>
+    <script src="./js/loding.js"></script>
+    <script>
+        // 產生卡片
+        for(let i = 0; i < 18; i++){
+            $('.game').append(`
+                <div class="card card-close">
+                    <div class="card-front"></div>
+                    <div class="card-back"></div>
+                </div>
+            `)
+        }
+
+        // 決定每張數字
+        $('.card').each(function(index){
+            const number = index % 10 + 1
+            console.log(index, number)
+            $(this).find('.card-front').css('background-image', `url(./images/${index % 10 + 1}.jpg)`)
+            // data- 是固定的，後面放自訂義名稱
+            $(this).attr('data-number', number)
+        })
+
+        // 打亂
+        for(let i = 0; i < 30; i++){
+            const randomA = Math.round(Math.random() * 19)
+            const randomB = Math.round(Math.random() * 19)
+            // 找到 A 之後，把 A 放在 B 的後面
+            // eq() 抓取
+            // insertAfter把 (前面的東西) 放在 (後面的東西) 的後面
+            $('.card').eq(randomA).insertAfter( $('.card').eq(randomB) )
+        }
+
+        // 翻牌
+        $('.game').on('click', '.card', function(){
+            if(
+                // .card 沒有 .card-close 代表被翻開
+                // 如果已被翻開數小於兩張
+                $('.card:not(.card-close)').length < 2 &&
+                // 且這張牌還沒翻開
+                $(this).hasClass('card-close') &&
+                // 這張牌還沒配對
+                !$(this).hasClass('card-ok')
+            ){
+                $(this).removeClass('card-close')
+            }
+            // 如果翻開兩張了
+            if($('.card:not(.card-close)').length === 2){
+                // 如果兩張一樣
+                if(
+                    $('.card:not(.card-close)').eq(0).attr('data-number') ===
+                    $('.card:not(.card-close)').eq(1).attr('data-number')
+                ){
+                    $('.card:not(.card-close)').fadeTo(500, 0)
+                    $('.card:not(.card-close)').addClass('card-ok')
+                }
+                setTimeout(function(){
+                    // 翻回來
+                    $('.card:not(.card-close)').addClass('card-close')
+                    // 過關判斷
+                    if ( $('.card-ok').length === $('.card').length ){
+                        Swal.fire({
+                            position: "center",
+                            icon: "success",
+                            title: "恭喜過關",
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    }
+                }, 1000)
+            }
+        })
+    </script>
+</body>
+</html>
